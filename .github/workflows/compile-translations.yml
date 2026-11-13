@@ -1,0 +1,52 @@
+name: Compile translations
+
+on:
+  push:
+    paths:
+      - '**.po'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  compile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install gettext
+        run: sudo apt-get update && sudo apt-get install -y gettext
+
+      - name: Compile PO files
+        shell: bash
+        env:
+          BEFORE: ${{ github.event.before }}
+          EVENT_NAME: ${{ github.event_name }}
+        run: |
+          if [[ "$EVENT_NAME" == "push" && "$BEFORE" != 0000000000000000000000000000000000000000 ]] && git cat-file -e "$BEFORE^{commit}" 2>/dev/null; then
+            mapfile -d '' -t files < <(git diff --name-only --diff-filter=ACMRT -z "$BEFORE" "$GITHUB_SHA" -- '*.po')
+          else
+            mapfile -d '' -t files < <(git ls-files -z -- '*.po')
+          fi
+
+          for file in "${files[@]}"; do
+            if [[ -f "$file" ]]; then
+              output="${file%.po}.mo"
+              msgfmt -o "$output" "$file"
+              git add -- "$output"
+            fi
+          done
+
+      - name: Commit compiled translations
+        shell: bash
+        run: |
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'Compile translation catalogs'
+          git push origin "HEAD:$GITHUB_REF"
