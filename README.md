@@ -44,15 +44,31 @@ wget -P /var/www/YOURLS/user/languages/ https://raw.githubusercontent.com/DJaege
 
 Falls die Dateien bereits existieren, legt `wget` standardmäßig zusätzliche Dateien mit Endungen wie `.1` an, statt die vorhandenen zu ersetzen.
 
-## Es liegt ein Fehler vor / Ich habe eine bessere Übersetzung anzubieten!
+## Mitwirken
 
-Idealerweise *forken* Sie dieses *Repository*, ändern die Datei und erstellen einen *Pull request*.
+### Übersetzung beitragen
 
-Prüfen Sie zunächst, ob das Problem bereits in den vorhandenen *Issues* beschrieben ist. Öffnen Sie andernfalls ein neues *Issue* und beschreiben Sie das Problem sowie Ihren Lösungsvorschlag möglichst genau.
+Forken Sie dieses Repository, nehmen Sie Ihre Änderungen vor und erstellen Sie einen Pull Request.
+
+### Fehler melden
+
+Prüfen Sie zunächst, ob das Problem bereits in den vorhandenen [Issues](https://github.com/DJaeger/YOURLS-de_DE/issues) beschrieben ist. Falls nicht, [eröffnen Sie ein neues Issue](https://github.com/DJaeger/YOURLS-de_DE/issues/new) und beschreiben Sie Problem und Lösungsvorschlag möglichst genau.
+
+### PO-Dateien
 
 Die Kataloge werden anhand der im Versionsstand genannten offiziellen YOURLS-POT gepflegt. Eine eigene POT-Erzeugung aus dem YOURLS-Quellcode ist nicht Teil dieses Repositories.
 
-Nach einem Push mit Änderungen an PO-Dateien erstellt der GitHub-Actions-Workflow die zugehörigen MO-Dateien und committet sie auf denselben Branch. Unter **Actions > Compile translations > Run workflow** lässt sich die Kompilierung aller PO-Dateien auch manuell starten, um fehlende MO-Dateien zu erzeugen. GitHub Actions muss dafür aktiviert sein und Schreibzugriff auf den Branch haben.
+Der Validate-PO-Workflow prüft PO-Dateien bei Pull Requests, Pushes und auf manuelle Anforderung mit gettext auf Syntax und Format-Platzhalter.
+
+### MO-Dateien
+
+Der Validate-MO-Workflow prüft direkt geänderte MO-Dateien in Pull Requests und Pushes auf Lesbarkeit; er kann auch manuell gestartet werden. Der Compile-MO-Workflow prüft jedes neu erzeugte MO direkt nach der Kompilierung und vor dem Commit mit `msgunfmt`.
+
+Der Compile-MO-Workflow wird durch PO-Pushes ausgelöst, auch auf PR-Branches; ein Merge und direkte PO-Änderungen über die GitHub-Webseite erzeugen ebenfalls einen Push. Er kompiliert die MO-Dateien und committet sie auf denselben Branch. Die Kompilierung aller PO-Dateien lässt sich außerdem unter **Actions > Compile MO catalogs > Run workflow** manuell starten, um fehlende MO-Dateien zu erzeugen.
+
+### Releases
+
+Ein per Git gepushter Tag im Format `vMAJOR.MINOR.PATCH` erstellt automatisch ein GitHub-Release. Wenn Sie eine Release im GitHub-Webinterface veröffentlichen, ergänzt der Release-Workflow die Notizen der bereits angelegten Release. Die Notizen listen die Commit-Nachrichten seit dem vorherigen Versionstag auf. Alternativ lässt sich der Workflow unter **Actions > Release > Run workflow** mit einem bereits gepushten Tag manuell starten.
 
 ## Credits
 
