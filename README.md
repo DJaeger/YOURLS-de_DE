@@ -40,4 +40,4 @@ Die Du-Variante wurde von [@DJaeger](https://github.com/DJaeger) zum DerSev-Fork
 
 ## Lizenz
 
-Free to use. Sie können hiermit tun, was Sie wollen.
+Dieses Repository steht unter der [MIT-Lizenz](LICENSE).
