@@ -2,9 +2,11 @@
 *(**YOURLS** – german translation)*
 
 
-## Version
+## Versionsstand
 
-YOURLS **1.8**
+- Übersetzungs-Release: **1.8.0**
+- Zielversion von YOURLS: **1.8**
+- POT-Basis: `YOURLS.pot` **1.8**, erstellt am 2021-02-22.
 
 ## Installation
 
