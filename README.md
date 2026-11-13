@@ -56,7 +56,8 @@ Nach einem Push mit Änderungen an PO-Dateien erstellt der GitHub-Actions-Workfl
 
 Die deutsche Übersetzung wird gepflegt von [@DJaeger](https://github.com/DJaeger).
 
-Die Du-Variante wurde von [@DJaeger](https://github.com/DJaeger) zum DerSev-Fork hinzugefügt.
+Dieser Fork basiert auf der Arbeit von [DerSev](https://github.com/DerSev) mit korrigierten Trennzeichen von [agru](https://github.com/agru).\
+Die Du-Variante wurde von [@DJaeger](https://github.com/DJaeger) hinzugefügt.
 
 ## Lizenz
 
