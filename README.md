@@ -26,6 +26,22 @@ YOURLS **1.8**
 
 Das `x` leitet den Private-Use-Zusatz `du` nach BCP 47 ein. So ergibt sich im HTML das gültige Sprachkennzeichen `de-DE-x-du`; außerdem muss `YOURLS_LANG` exakt dem Namen der `.mo`-Datei ohne Endung entsprechen.
 
+### Alternative: Download unter Linux
+
+Statt des ZIP-Downloads können Sie das gewünschte Dateipaar mit Bash direkt in das Sprachverzeichnis herunterladen. Passen Sie den Pfad an Ihre YOURLS-Installation an und setzen Sie anschließend `YOURLS_LANG` wie oben beschrieben.
+
+**Formelle Ansprache**
+```bash
+wget -P /var/www/YOURLS/user/languages/ https://raw.githubusercontent.com/DJaeger/YOURLS-de_DE/main/de_DE.{po,mo}
+```
+
+**Du-Ansprache**
+```bash
+wget -P /var/www/YOURLS/user/languages/ https://raw.githubusercontent.com/DJaeger/YOURLS-de_DE/main/de_DE_x_du.{po,mo}
+```
+
+Falls die Dateien bereits existieren, legt `wget` standardmäßig zusätzliche Dateien mit Endungen wie `.1` an, statt die vorhandenen zu ersetzen.
+
 ## Es liegt ein Fehler vor / Ich habe eine bessere Übersetzung anzubieten!
 
 Idealerweise *forken* Sie dieses *Repository*, ändern die Datei und erstellen einen *Pull request*.
