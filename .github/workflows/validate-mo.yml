@@ -1,0 +1,37 @@
+name: Validate MO catalogs
+
+on:
+  push:
+    paths:
+      - '**.mo'
+  pull_request:
+    paths:
+      - '**.mo'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Install gettext
+        run: sudo apt-get update && sudo apt-get install -y gettext
+
+      - name: Validate MO files
+        shell: bash
+        run: |
+          shopt -s nullglob
+          files=( *.mo )
+          if (( ${#files[@]} == 0 )); then
+            echo 'No MO files found.' >&2
+            exit 1
+          fi
+
+          for file in "${files[@]}"; do
+            echo "Validating MO: $file"
+            msgunfmt "$file" > /dev/null
+          done

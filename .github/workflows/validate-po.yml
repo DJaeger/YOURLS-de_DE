@@ -1,0 +1,37 @@
+name: Validate PO catalogs
+
+on:
+  push:
+    paths:
+      - '**.po'
+  pull_request:
+    paths:
+      - '**.po'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Install gettext
+        run: sudo apt-get update && sudo apt-get install -y gettext
+
+      - name: Validate PO files
+        shell: bash
+        run: |
+          shopt -s nullglob
+          files=( *.po )
+          if (( ${#files[@]} == 0 )); then
+            echo 'No PO files found.' >&2
+            exit 1
+          fi
+
+          for file in "${files[@]}"; do
+            echo "Validating PO: $file"
+            msgfmt --check --check-format -o /dev/null "$file"
+          done
