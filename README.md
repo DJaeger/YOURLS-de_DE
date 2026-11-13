@@ -50,6 +50,8 @@ Idealerweise *forken* Sie dieses *Repository*, ändern die Datei und erstellen e
 
 Prüfen Sie zunächst, ob das Problem bereits in den vorhandenen *Issues* beschrieben ist. Öffnen Sie andernfalls ein neues *Issue* und beschreiben Sie das Problem sowie Ihren Lösungsvorschlag möglichst genau.
 
+Die Kataloge werden anhand der im Versionsstand genannten offiziellen YOURLS-POT gepflegt. Eine eigene POT-Erzeugung aus dem YOURLS-Quellcode ist nicht Teil dieses Repositories.
+
 Nach einem Push mit Änderungen an PO-Dateien erstellt der GitHub-Actions-Workflow die zugehörigen MO-Dateien und committet sie auf denselben Branch. Unter **Actions > Compile translations > Run workflow** lässt sich die Kompilierung aller PO-Dateien auch manuell starten, um fehlende MO-Dateien zu erzeugen. GitHub Actions muss dafür aktiviert sein und Schreibzugriff auf den Branch haben.
 
 ## Credits
