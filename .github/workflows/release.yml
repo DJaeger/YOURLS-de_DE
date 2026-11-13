@@ -1,0 +1,72 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Existing version tag to release (for example, v1.9.0)
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.event.inputs.tag || github.event.release.tag_name || github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.inputs.tag || github.ref }}
+          fetch-depth: 0
+
+      - name: Generate release notes
+        id: notes
+        shell: bash
+        env:
+          TAG: ${{ github.event.inputs.tag || github.event.release.tag_name || github.ref_name }}
+        run: |
+          if [[ ! "$TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "Release tags must use the vMAJOR.MINOR.PATCH format." >&2
+            exit 1
+          fi
+
+          target="$(git rev-parse "$TAG^{commit}")"
+          previous_tag="$(git describe --tags --abbrev=0 "$target^" 2>/dev/null || true)"
+          notes_file="$RUNNER_TEMP/release-notes.md"
+
+          if [[ -n "$previous_tag" ]]; then
+            printf '## Changes since %s\n\n' "$previous_tag" > "$notes_file"
+            range="$previous_tag..$target"
+          else
+            printf '## Changes\n\n' > "$notes_file"
+            range="$target"
+          fi
+
+          git log --no-merges --format='- %s' "$range" >> "$notes_file"
+          if ! grep -q '^- ' "$notes_file"; then
+            printf '%s\n' '- No commit summaries available.' >> "$notes_file"
+          fi
+
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+
+      - name: Create or update GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          tag='${{ steps.notes.outputs.tag }}'
+          if gh release view "$tag" >/dev/null 2>&1; then
+            gh release edit "$tag" --notes-file "$RUNNER_TEMP/release-notes.md"
+          else
+            gh release create "$tag" --verify-tag --title "$tag" --notes-file "$RUNNER_TEMP/release-notes.md"
+          fi
