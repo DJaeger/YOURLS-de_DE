@@ -4,9 +4,9 @@
 
 ## Versionsstand
 
-- Übersetzungs-Release: **1.9.0**
-- Zielversion von YOURLS: **1.9**
-- POT-Basis: `YOURLS.pot` **1.9**, erstellt am 2022-04-22.
+- Übersetzungs-Release: **1.10.0**
+- Zielversion von YOURLS: **1.10**
+- POT-Basis: `YOURLS.pot` **1.10.0**, erstellt am 2025-04-03.
 
 ## Installation
 
