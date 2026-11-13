@@ -1,4 +1,4 @@
-name: Compile translations
+name: Compile MO catalogs
 
 on:
   push:
@@ -20,7 +20,7 @@ jobs:
       - name: Install gettext
         run: sudo apt-get update && sudo apt-get install -y gettext
 
-      - name: Compile PO files
+      - name: Compile PO files to MO catalogs
         shell: bash
         env:
           BEFORE: ${{ github.event.before }}
@@ -36,11 +36,12 @@ jobs:
             if [[ -f "$file" ]]; then
               output="${file%.po}.mo"
               msgfmt -o "$output" "$file"
+              msgunfmt "$output" > /dev/null
               git add -- "$output"
             fi
           done
 
-      - name: Commit compiled translations
+      - name: Commit compiled MO catalogs
         shell: bash
         run: |
           if git diff --cached --quiet; then
