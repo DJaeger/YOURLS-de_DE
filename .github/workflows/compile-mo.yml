@@ -35,7 +35,7 @@ jobs:
           for file in "${files[@]}"; do
             if [[ -f "$file" ]]; then
               output="${file%.po}.mo"
-              msgfmt -o "$output" "$file"
+              msgfmt --check --check-format -o "$output" "$file"
               msgunfmt "$output" > /dev/null
               git add -- "$output"
             fi
