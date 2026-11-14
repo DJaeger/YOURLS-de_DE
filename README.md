@@ -68,7 +68,7 @@ Der Compile-MO-Workflow wird durch PO-Pushes ausgelöst, auch auf PR-Branches; e
 
 ### Releases
 
-Ein per Git gepushter Tag im Format `vMAJOR.MINOR.PATCH` erstellt automatisch ein GitHub-Release. Wenn Sie eine Release im GitHub-Webinterface veröffentlichen, ergänzt der Release-Workflow die Notizen der bereits angelegten Release. Die Notizen listen die Commit-Nachrichten seit dem vorherigen Versionstag auf. Alternativ können Sie unter **Actions > Release > Run workflow** einen Tag eingeben. Falls der Tag noch nicht existiert, legt ihn der Workflow am im Dialog ausgewählten Branch oder Commit an und erstellt die Release samt Notizen.
+Ein per Git gepushter Tag im Format `vMAJOR.MINOR.PATCH` erstellt automatisch ein GitHub-Release. Wenn Sie eine Release im GitHub-Webinterface veröffentlichen, ergänzt der Release-Workflow die Notizen der bereits angelegten Release. Die Notizen listen die Commit-Nachrichten seit dem vorherigen Versionstag auf. Der Workflow prüft, ob beide PO/MO-Dateipaare vorhanden sind, erstellt daraus ein ZIP mit allen vier Dateien und hängt es an die Release an. Alternativ können Sie unter **Actions > Release > Run workflow** einen Tag eingeben. Falls der Tag noch nicht existiert, legt ihn der Workflow am im Dialog ausgewählten Branch oder Commit an und erstellt die Release samt Notizen und ZIP.
 
 ## Credits
 
