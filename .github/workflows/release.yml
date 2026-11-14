@@ -72,8 +72,37 @@ jobs:
             range="$target"
           fi
 
-          git log --no-merges --format='- %s' "$range" >> "$notes_file"
-          if ! grep -q '^- ' "$notes_file"; then
+          declare -A changes=()
+          while IFS= read -r subject; do
+            if [[ "$subject" == *:* ]]; then
+              prefix="${subject%%:*}"
+              type="${prefix%%(*}"
+              type="${type%!}"
+              subject="${subject#*:}"
+              subject="${subject# }"
+            else
+              type="other"
+            fi
+
+            case "$type" in
+              feat) category='Features' ;;
+              fix) category='Fixes' ;;
+              perf) category='Performance' ;;
+              docs) category='Documentation' ;;
+              ci|build|chore|refactor|test|style|revert) category='Maintenance' ;;
+              *) category='Other changes' ;;
+            esac
+
+            changes["$category"]+="- $subject"$'\n'
+          done < <(git log --no-merges --format='%s' "$range")
+
+          for category in Features Fixes Performance Documentation Maintenance 'Other changes'; do
+            if [[ -n "${changes[$category]:-}" ]]; then
+              printf '### %s\n\n%s\n' "$category" "${changes[$category]}" >> "$notes_file"
+            fi
+          done
+
+          if [[ $(wc -l < "$notes_file") -le 2 ]]; then
             printf '%s\n' '- No commit summaries available.' >> "$notes_file"
           fi
 
